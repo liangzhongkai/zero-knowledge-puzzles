@@ -13,8 +13,8 @@ include "../node_modules/circomlib/circuits/comparators.circom";
 // If b is the integer square root of a, then
 // the following must be true:
 //
-// (b - 1)(b - 1) < a
-// (b + 1)(b + 1) > a
+// b * b <= a
+// a < (b + 1) * (b + 1)
 // 
 // be careful when verifying that you 
 // handle the corner case of overflowing the 
@@ -24,6 +24,17 @@ include "../node_modules/circomlib/circuits/comparators.circom";
 template IntSqrt(n) {
     signal input in[2];
 
+    signal bSq <== in[0] * in[0];
+
+    component lower = LessThan(n);
+    lower.in[0] <== bSq;
+    lower.in[1] <== in[1] + 1;
+
+    component upper = LessThan(n);
+    upper.in[0] <== in[1];
+    upper.in[1] <== bSq + 2 * in[0] + 1;
+
+    lower.out * upper.out === 1;
 }
 
-component main = IntSqrt(252);
+component main = IntSqrt(32);

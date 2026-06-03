@@ -9,6 +9,17 @@ template MultiAND(n) {
     signal input in[n];
     signal output out;
 
+    for (var i=0; i<n; i++)
+        in[i] * (in[i] - 1) === 0;
+
+    signal tmp[n+1];
+    tmp[0] <== 1;
+
+    for (var i=0; i<n; i++) {
+        tmp[i+1] <== tmp[i] * in[i];
+    }
+
+    out <== tmp[n];
 }
 
 component main = MultiAND(4);

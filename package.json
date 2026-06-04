@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.2.2",
-    "ethereum-waffle": "^4.0.10"
+    "ethereum-waffle": "^4.0.10",
+    "hardhat": "^2.22.0"
   }
 }

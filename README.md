@@ -74,6 +74,32 @@ yarn test ./test/<TestName>.js
 - [Sudoku](https://github.com/RareSkills/zero-knowledge-puzzles/tree/main/Sudoku)
 - [Sujiko](https://github.com/RareSkills/zero-knowledge-puzzles/tree/main/Sujiko)
 
+## Real-world scenarios (production-style)
+
+After the puzzle track, three end-to-end examples use Poseidon Merkle proofs + Groth16 + Solidity:
+
+| Scenario | Folder | What it proves |
+|----------|--------|----------------|
+| Whitelist 白名单 | [Whitelist](Whitelist/) | Private `secret` is in public `root` allowlist |
+| Vote 投票 | [Vote](Vote/) | Eligible voter + `nullifier` anti double-vote + `voteCommitment` |
+| Claim 领取 | [Claim](Claim/) | `amount`-bound leaf + one-time `nullifier` claim |
+
+```bash
+yarn test ./test/Whitelist.js
+yarn test ./test/Vote.js
+yarn test ./test/Claim.js
+yarn test ./test/ZKContracts.js   # on-chain app logic (mock verifier)
+```
+
+Generate `input.json` and full proof pipeline:
+
+```bash
+node scripts/gen-input.js whitelist   # or vote | claim
+cd Whitelist && ./script.sh           # circom + snarkjs + verifier.sol
+```
+
+Shared Merkle library: `lib/MerkleProof.circom`, `lib/merkle.js`.
+
 ## Relevant links 
 
 - [CircomLib](https://github.com/iden3/circomlib )
